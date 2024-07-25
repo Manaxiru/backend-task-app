@@ -1,3 +1,6 @@
+import { GenericRepository } from "./generic-repository";
 
 
-export { }
+export {
+    GenericRepository
+}

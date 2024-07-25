@@ -1,9 +1,11 @@
 import express, { Application } from "express";
 import dotenvConfig from "dotenv/config";
 import cors from "cors";
-import { initializeApp, cert } from "firebase-admin/app";
+import { initializeApp as initializeAdminApp, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
+import { initializeApp } from "firebase/app";
 import { attachControllers } from "@decorators/express";
+import { AuthController, UsersController } from "@controllers/"
 import serverless from "serverless-http";
 dotenvConfig;
 
@@ -13,15 +15,22 @@ class Api {
     private app: Application;
 
     constructor() {
+        this.firebaseAdminSetup();
         this.firebaseSetup();
         this.app = express();
         this.api = express();
         this.config();
     }
 
-    private firebaseSetup() {
-        initializeApp({ credential: cert(require("../../../serviceAccountKey.json")) });
+    private firebaseAdminSetup() {
+        initializeAdminApp({ credential: cert(require("../../../serviceAccountKey.json")) });
         getFirestore().settings({ timestampsInSnapshots: true });
+    }
+
+    private firebaseSetup() {
+        initializeApp({
+            apiKey: process.env.fbc_apiKey
+        });
     }
 
     private async config() {
@@ -30,7 +39,7 @@ class Api {
             express.json(),
             express.urlencoded({ extended: true })
         ]);
-        await attachControllers(this.app, []);
+        await attachControllers(this.app, [AuthController, UsersController]);
         this.api.use('/api', this.app);
     }
 }
