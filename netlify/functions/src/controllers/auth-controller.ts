@@ -29,7 +29,7 @@ export class AuthController {
     @Post(`/${InternalRoutes.AUTH.LOGIN}`, [body("email").trim().isEmail()])
     async login(@Req() req: ITypedRequestBody<IUsers>, @Body() body: IUsers, @Response() res: ITypedResponse<IUsers>) {
         try {
-            if (!validationResult(req).isEmpty()) return res.status(400).json({ message: Messages.EMAIL_INVALID });
+            if (!validationResult(req).isEmpty()) return res.status(400).json({ success: false, message: Messages.EMAIL_INVALID });
 
             this.getUser(body.email)
                 .then(async user => {
@@ -44,18 +44,19 @@ export class AuthController {
                             createdAt: (credential.user.toJSON() as any).createdAt,
                             lastLoginAt: (credential.user.toJSON() as any).lastLoginAt
                         },
+                        success: true,
                         message: Messages.VALID_LOGIN
                     });
                 })
                 .catch(err => {
                     if (err.errorInfo && err.errorInfo.code === "auth/user-not-found")
-                        return res.status(404).json({ data: err, message: Messages.EMAIL_NOT_FOUND });
+                        return res.status(404).json({ data: err, success: false, message: Messages.EMAIL_NOT_FOUND });
                     throw err;
                 });
 
             return;
         } catch (err) {
-            return res.status(500).json({ data: err, message: Messages.ERROR });
+            return res.status(500).json({ data: err, success: false, message: Messages.ERROR });
         }
     }
 
@@ -64,9 +65,9 @@ export class AuthController {
         try {
             await this.authRepository.logout(res.locals.user.uid);
 
-            return res.status(200).json({ message: Messages.VALID_LOGOUT });
+            return res.status(200).json({ success: true, message: Messages.VALID_LOGOUT });
         } catch (err) {
-            return res.status(500).json({ data: err, message: Messages.ERROR });
+            return res.status(500).json({ data: err, success: false, message: Messages.ERROR });
         }
     }
 }

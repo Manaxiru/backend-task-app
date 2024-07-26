@@ -13,11 +13,12 @@ export class Auth implements Middleware {
                 return next();
             } catch (err: any) {
                 return res.status(401).json({
+                    success: false,
                     message: err.errorInfo && err.errorInfo.code === "auth/id-token-revoked" ?
                         Messages.VALID_LOGOUT : Messages.TOKEN_ERROR
                 });
             }
         } else
-            return res.status(401).json({ message: Messages.TOKEN_INVALID });
+            return res.status(401).json({ success: false, message: Messages.TOKEN_INVALID });
     }
 }

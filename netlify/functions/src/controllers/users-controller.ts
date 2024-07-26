@@ -36,31 +36,32 @@ export class UsersController {
     @Get(`/:${InternalRoutes.USERS.EMAIL}`, [param(InternalRoutes.USERS.EMAIL).trim().isEmail()])
     async findOneByEmail(@Req() req: ITypedRequestBody<IUsers>, @Response() res: ITypedResponse<IUsers>, @Params(InternalRoutes.USERS.EMAIL) email: string) {
         try {
-            if (!validationResult(req).isEmpty()) return res.status(400).json({ message: Messages.EMAIL_INVALID });
+            if (!validationResult(req).isEmpty()) return res.status(400).json({ success: false, message: Messages.EMAIL_INVALID });
 
-            if (!(await this.emailExist(email))) return res.status(404).json({ message: Messages.EMAIL_NOT_FOUND });
+            if (!(await this.emailExist(email))) return res.status(404).json({ success: false, message: Messages.EMAIL_NOT_FOUND });
 
-            return res.status(200).json({ message: Messages.EMAIL_FOUND });
+            return res.status(200).json({ success: true, message: Messages.EMAIL_FOUND });
         } catch (err) {
-            return res.status(500).json({ data: err, message: Messages.ERROR });
+            return res.status(500).json({ data: err, success: false, message: Messages.ERROR });
         }
     }
 
     @Post('/', [body("email").trim().isEmail()])
     async create(@Req() req: ITypedRequestBody<IUsers>, @Body() body: IUsers, @Response() res: ITypedResponse<IUsers>) {
         try {
-            if (!validationResult(req).isEmpty()) return res.status(400).json({ message: Messages.EMAIL_INVALID });
+            if (!validationResult(req).isEmpty()) return res.status(400).json({ success: false, message: Messages.EMAIL_INVALID });
 
-            if (await this.emailExist(body.email)) return res.status(409).json({ message: Messages.EMAIL_FOUND });
+            if (await this.emailExist(body.email)) return res.status(409).json({ success: false, message: Messages.EMAIL_FOUND });
 
             const user = await this.userRepository.create({ email: body.email });
 
             return res.status(201).json({
                 data: user,
+                success: true,
                 message: Messages.EMAIL_REGISTERED
             });
         } catch (err) {
-            return res.status(500).json({ data: err, message: Messages.ERROR });
+            return res.status(500).json({ data: err, success: false, message: Messages.ERROR });
         }
     }
 }

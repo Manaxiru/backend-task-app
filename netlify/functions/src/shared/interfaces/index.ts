@@ -4,6 +4,8 @@ import { ITypedRequestBody } from "./ITypedRequestBody";
 import { ITypedRequest } from "./ITypedRequest";
 import { ITypedRequestQuery } from "./ITypedRequestQuery";
 import { IUsers } from "./IUsers";
+import { IUserTask } from "./IUserTasks";
+import { ITask } from "./ITasks";
 
 
 export {
@@ -12,5 +14,7 @@ export {
     ITypedRequestBody,
     ITypedRequest,
     ITypedRequestQuery,
-    IUsers
+    IUsers,
+    IUserTask,
+    ITask
 }

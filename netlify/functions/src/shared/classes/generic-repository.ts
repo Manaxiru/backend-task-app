@@ -6,8 +6,12 @@ export abstract class GenericRepository<T> {
 
   constructor(private repositoryModuleURL: BackendModules) { }
 
-  protected create(data: Partial<T>): Promise<FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>> {
-    return getFirestore().collection(this.repositoryModuleURL).add(data);
+  protected create(id: string, data: Partial<T>, subCollection: BackendModules): Promise<FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>> {
+    return getFirestore().collection(this.repositoryModuleURL).doc(id).collection(subCollection).add(data);
+  }
+
+  protected createWithId(id: string, data: Partial<T>): Promise<FirebaseFirestore.WriteResult> {
+    return getFirestore().collection(this.repositoryModuleURL).doc(id).set(data, { merge: true });
   }
 
   protected readOne(id: string): Promise<FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>> {
@@ -18,7 +22,7 @@ export abstract class GenericRepository<T> {
     return getFirestore().collection(this.repositoryModuleURL).get();
   }
 
-  protected readByField(field: keyof T, data: string | number): Promise<FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>> {
-    return getFirestore().collection(this.repositoryModuleURL).where(field.toString(), "==", data).get();
+  protected readAllCollection(id: string, subCollection: BackendModules, orderField?: keyof T): FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData> | Promise<FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>> {
+    return getFirestore().collection(this.repositoryModuleURL).doc(id).collection(subCollection);
   }
 }

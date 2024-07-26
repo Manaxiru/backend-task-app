@@ -6,7 +6,8 @@
         "build": "tsc",
         "watch": "tsc --watch",
         "serve_netlify": "netlify dev --no-open",
-        "serve_netlify_functions": "netlify functions:serve"
+        "serve_netlify_functions": "netlify functions:serve",
+        "deploy_netlify": "netlify deploy"
     },
     "private": true,
     "dependencies": {

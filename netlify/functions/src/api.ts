@@ -5,7 +5,7 @@ import { initializeApp as initializeAdminApp, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { initializeApp } from "firebase/app";
 import { attachControllers } from "@decorators/express";
-import { AuthController, UsersController } from "@controllers/"
+import { AuthController, UsersController, TasksController } from "@controllers/index"
 import serverless from "serverless-http";
 dotenvConfig;
 
@@ -39,7 +39,7 @@ class Api {
             express.json(),
             express.urlencoded({ extended: true })
         ]);
-        await attachControllers(this.app, [AuthController, UsersController]);
+        await attachControllers(this.app, [AuthController, UsersController, TasksController]);
         this.api.use('/api', this.app);
     }
 }
