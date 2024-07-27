@@ -38,7 +38,7 @@ export class UsersController {
         try {
             if (!validationResult(req).isEmpty()) return res.status(400).json({ success: false, message: Messages.EMAIL_INVALID });
 
-            if (!(await this.emailExist(email))) return res.status(404).json({ success: false, message: Messages.EMAIL_NOT_FOUND });
+            if (!(await this.emailExist(email))) return res.status(404).json({ success: true, message: Messages.EMAIL_NOT_FOUND });
 
             return res.status(200).json({ success: true, message: Messages.EMAIL_FOUND });
         } catch (err) {
@@ -51,7 +51,7 @@ export class UsersController {
         try {
             if (!validationResult(req).isEmpty()) return res.status(400).json({ success: false, message: Messages.EMAIL_INVALID });
 
-            if (await this.emailExist(body.email)) return res.status(409).json({ success: false, message: Messages.EMAIL_FOUND });
+            if (await this.emailExist(body.email)) return res.status(409).json({ success: true, message: Messages.EMAIL_FOUND });
 
             const user = await this.userRepository.create({ email: body.email });
 
