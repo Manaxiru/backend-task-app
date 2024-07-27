@@ -1,3 +1,4 @@
+import { CollectionReference, DocumentReference, DocumentSnapshot, QuerySnapshot, WriteResult } from "firebase-admin/firestore";
 import { GenericRepository } from "@shared/classes";
 import { BackendModules } from "@shared/enums";
 import { IUserTask, ITask } from "@shared/interfaces";
@@ -14,20 +15,31 @@ export class TasksRepository extends GenericRepository<IUserTask | ITask> {
     return this._instance;
   }
 
-  override createWithId(id: string, data: Partial<IUserTask>): Promise<FirebaseFirestore.WriteResult> {
+  override createWithId(id: string, data: Partial<IUserTask>): Promise<WriteResult> {
     return super.createWithId(id, data);
   }
 
-  override create(id: string, data: Partial<ITask>, subCollection: BackendModules = BackendModules.TASKS): Promise<FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>> {
-    return super.create(id, data, subCollection);
+  override createSubcollection(id: string, data: Partial<ITask>, subcollection: BackendModules = BackendModules.TASKS): Promise<DocumentReference> {
+    return super.createSubcollection(id, data, subcollection);
   }
 
-  override readOne(id: string): Promise<FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>> {
+  override readOne(id: string): Promise<DocumentSnapshot> {
     return super.readOne(id);
   }
 
-  override readAllCollection(id: string, subCollection: BackendModules = BackendModules.TASKS, orderField: keyof ITask = "createdAt"): Promise<FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>> {
-    return (super.readAllCollection(id, subCollection) as FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>)
-      .orderBy(orderField, "desc").get();
+  override readOneSubcollection(id: string, idSubcollection: string, subcollection: BackendModules = BackendModules.TASKS): Promise<DocumentSnapshot> {
+    return super.readOneSubcollection(id, idSubcollection, subcollection);
+  }
+
+  override readAllSubcollection(id: string, subcollection: BackendModules = BackendModules.TASKS, orderField: keyof ITask = "createdAt"): Promise<QuerySnapshot> {
+    return (super.readAllSubcollection(id, subcollection) as CollectionReference).orderBy(orderField, "desc").get();
+  }
+
+  override updateSubcollection(id: string, idSubcollection: string, data: Partial<ITask>, subcollection: BackendModules = BackendModules.TASKS): Promise<WriteResult> {
+    return super.updateSubcollection(id, idSubcollection, data, subcollection);
+  }
+
+  override deleteSubcollection(id: string, idSubcollection: string, subcollection: BackendModules = BackendModules.TASKS): Promise<WriteResult> {
+    return super.deleteSubcollection(id, idSubcollection, subcollection);
   }
 }

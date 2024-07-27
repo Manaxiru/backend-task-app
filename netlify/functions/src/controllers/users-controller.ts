@@ -34,7 +34,7 @@ export class UsersController {
     }
 
     @Get(`/:${InternalRoutes.USERS.EMAIL}`, [param(InternalRoutes.USERS.EMAIL).trim().isEmail()])
-    async findOneByEmail(@Req() req: ITypedRequestBody<IUsers>, @Response() res: ITypedResponse<IUsers>, @Params(InternalRoutes.USERS.EMAIL) email: string) {
+    async findOneByEmail(@Req() req: ITypedRequestBody<IUsers>, @Params(InternalRoutes.USERS.EMAIL) email: string, @Response() res: ITypedResponse<IUsers>) {
         try {
             if (!validationResult(req).isEmpty()) return res.status(400).json({ success: false, message: Messages.EMAIL_INVALID });
 

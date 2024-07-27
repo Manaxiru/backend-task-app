@@ -5,5 +5,8 @@ export const InternalRoutes = {
     },
     USERS: {
         EMAIL: "email"
+    },
+    TASKS: {
+        ID: "id"
     }
 }

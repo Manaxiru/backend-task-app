@@ -5,7 +5,7 @@ import { initializeApp as initializeAdminApp, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { initializeApp } from "firebase/app";
 import { attachControllers } from "@decorators/express";
-import { AuthController, UsersController, TasksController } from "@controllers/index"
+import { AuthController, UsersController, TasksController } from "@controllers/index";
 import serverless from "serverless-http";
 dotenvConfig;
 
