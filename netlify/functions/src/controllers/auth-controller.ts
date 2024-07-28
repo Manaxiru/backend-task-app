@@ -50,7 +50,7 @@ export class AuthController {
                 })
                 .catch(err => {
                     if (err.errorInfo && err.errorInfo.code === "auth/user-not-found")
-                        return res.status(404).json({ data: err, success: false, message: Messages.EMAIL_NOT_FOUND });
+                        return res.status(404).json({ data: err, success: true, message: Messages.EMAIL_NOT_FOUND });
                     throw err;
                 });
 
