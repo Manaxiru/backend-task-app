@@ -42,7 +42,7 @@ export class AuthController {
                             token: (credential.user as any).accessToken,
                             expirationTime: (credential.user as any).stsTokenManager.expirationTime,
                             createdAt: (credential.user.toJSON() as any).createdAt,
-                            lastLoginAt: (credential.user.toJSON() as any).lastLoginAt
+                            lastLoginAt: new Date(user.metadata.lastSignInTime).getTime()
                         },
                         success: true,
                         message: Messages.VALID_LOGIN
