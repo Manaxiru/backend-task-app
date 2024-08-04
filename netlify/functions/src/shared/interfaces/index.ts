@@ -5,7 +5,7 @@ import { ITypedRequest } from "./ITypedRequest";
 import { ITypedRequestQuery } from "./ITypedRequestQuery";
 import { IUsers } from "./IUsers";
 import { IUserTask } from "./IUserTasks";
-import { ITask } from "./ITasks";
+import { ITask } from "./ITask";
 
 
 export {

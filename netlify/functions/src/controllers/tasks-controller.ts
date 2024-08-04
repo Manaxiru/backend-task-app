@@ -44,7 +44,7 @@ export class TasksController {
                 task = { id: (await this.taskRepository.createSubcollection(res.locals.user.uid, task)).id, ...task };
 
             return res.status(201).json({
-                data: { ...task, createdAt: task.createdAt?.seconds, updatedAt: task.updatedAt?.seconds },
+                data: { ...task, createdAt: task.createdAt?.toMillis(), updatedAt: task.updatedAt?.toMillis() },
                 success: true,
                 message: Messages.TASK_REGISTERED
             });
@@ -62,7 +62,7 @@ export class TasksController {
 
             if (!tasksSnapshot.empty) {
                 tasksSnapshot.forEach(taskDoc =>
-                    tasks.push({ id: taskDoc.id, ...taskDoc.data(), createdAt: taskDoc.data().createdAt?.seconds, updatedAt: taskDoc.data().updatedAt?.seconds } as ITask)
+                    tasks.push({ id: taskDoc.id, ...taskDoc.data(), createdAt: taskDoc.data().createdAt?.toMillis(), updatedAt: taskDoc.data().updatedAt?.toMillis() } as ITask)
                 );
             }
 
@@ -92,7 +92,7 @@ export class TasksController {
                 });
 
             return res.status(200).json({
-                data: { ...task, createdAt: task.createdAt?.seconds, updatedAt: task.updatedAt?.seconds },
+                data: { ...task, createdAt: task.createdAt?.toMillis(), updatedAt: task.updatedAt?.toMillis() },
                 success: true,
                 message: Messages.TASK_UPDATED
             });
