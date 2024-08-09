@@ -1,4 +1,5 @@
 export enum Messages {
+	CHECK = "Servidor de funciones de Netlify Activo",
 	ERROR = "Error desconocido",
 	TOKEN_INVALID = "Token inválido, inicie sesión nuevamente",
 	TOKEN_ERROR = "No se pudo válidar el token, inicie sesión nuevamente",

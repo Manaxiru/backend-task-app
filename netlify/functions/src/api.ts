@@ -5,6 +5,7 @@ import { initializeApp as initializeAdminApp, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { initializeApp } from "firebase/app";
 import { attachControllers } from "@decorators/express";
+import { GeneralController } from "@controllers/general-controller";
 import { AuthController } from "@controllers/auth-controller";
 import { UsersController } from "@controllers/users-controller";
 import { TasksController } from "@controllers/tasks-controller";
@@ -41,7 +42,7 @@ class Api {
             express.json(),
             express.urlencoded({ extended: true })
         ]);
-        await attachControllers(this.app, [AuthController, UsersController, TasksController]);
+        await attachControllers(this.app, [GeneralController, AuthController, UsersController, TasksController]);
         this.api.use('/api', this.app);
     }
 }
